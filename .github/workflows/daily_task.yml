@@ -31,13 +31,18 @@ jobs:
         run: |
           python code.py
 
-      # 5. Değişiklikleri commit et ve pushla
+      # 5. Git status kontrolü yap
+      - name: Check git status
+        run: git status
+
+      # 6. Dosya değişikliklerini commit et ve pushla
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-          git add data.xlsx
-          git commit -m "Update data.xlsx with new fuel prices"
+          git add path/to/Data.xlsx  # Dosya yolunu doğru belirtin
+          git status  # Bu satırı ekledim
+          git commit -m "Update Data.xlsx with new fuel prices"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
