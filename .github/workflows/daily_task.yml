@@ -2,9 +2,8 @@ name: Daily Task - Run Python Script
 
 on:
   schedule:
-    # Her gün saat 01:00'de çalışacak (UTC)
     - cron: '0 1 * * *'
-  workflow_dispatch: # Manuel tetikleme de sağlanabilir.
+  workflow_dispatch: 
 
 jobs:
   run-python-script:
@@ -31,3 +30,14 @@ jobs:
       - name: Run Python script
         run: |
           python code.py
+
+      # 5. Değişiklikleri commit et ve pushla
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add data.xlsx
+          git commit -m "Update data.xlsx with new fuel prices"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
