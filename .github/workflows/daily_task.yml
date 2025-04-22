@@ -5,6 +5,9 @@ on:
     - cron: '0 1 * * *'  # Her gün saat 01:00'de çalışacak
   workflow_dispatch:  # Manuel olarak tetiklenebilir
 
+permissions:
+  contents: write  # Repo içeriğine yazma izni veriyoruz
+
 jobs:
   run-python-script:
     runs-on: ubuntu-latest  # Ubuntu ortamında çalışacak
