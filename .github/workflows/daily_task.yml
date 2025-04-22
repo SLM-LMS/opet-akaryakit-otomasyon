@@ -2,19 +2,19 @@ name: Daily Task - Run Python Script
 
 on:
   schedule:
-    - cron: '0 1 * * *'
-  workflow_dispatch: 
+    - cron: '0 1 * * *'  # Her gün saat 01:00'de çalışacak
+  workflow_dispatch:  # Manuel olarak tetiklenebilir
 
 jobs:
   run-python-script:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Ubuntu ortamında çalışacak
 
     steps:
       # 1. Python ortamını kur
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.9'  # Python 3.9 versiyonu kullanılacak
 
       # 2. Gereksinimleri yükle
       - name: Install dependencies
@@ -26,23 +26,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # 4. Python script'i çalıştır
+      # 4. Python script'ini çalıştır
       - name: Run Python script
         run: |
-          python code.py
+          python code.py  # Python script'inizi çalıştırır
 
       # 5. Git status kontrolü yap
       - name: Check git status
         run: git status
 
-      # 6. Dosya değişikliklerini commit et ve pushla
+      # 6. Değişiklikleri commit et ve pushla
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-          git add path/to/Data.xlsx  # Dosya yolunu doğru belirtin
-          git status  # Bu satırı ekledim
-          git commit -m "Update Data.xlsx with new fuel prices"
-          git push
+          git add Data.xlsx  # Ana dizindeki dosyayı ekliyoruz
+          git status  # Değişikliklerin doğru bir şekilde eklendiğini kontrol et
+          git commit -m "Update Data.xlsx with new fuel prices"  # Commit mesajı
+          git push  # Değişiklikleri pushla
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token'ı
