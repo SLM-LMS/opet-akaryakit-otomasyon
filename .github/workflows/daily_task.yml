@@ -1,0 +1,33 @@
+name: Daily Task - Run Python Script
+
+on:
+  schedule:
+    # Her gün saat 01:00'de çalışacak (UTC)
+    - cron: '0 1 * * *'
+  workflow_dispatch: # Manuel tetikleme de sağlanabilir.
+
+jobs:
+  run-python-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Python ortamını kur
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      # 2. Gereksinimleri yükle
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pandas openpyxl
+
+      # 3. Repo'yu çek
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # 4. Python script'i çalıştır
+      - name: Run Python script
+        run: |
+          python code.py
