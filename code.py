@@ -5,7 +5,7 @@ import openpyxl
 from openpyxl import load_workbook
 import os
 
-excel_path = 'Data.xlsx'
+excel_path = r"C:\\Users\selim.olmus\\OneDrive - Horoz Lojistik\\_slms_\\Opet_Yakıt\\Data2.xlsx"
 
 # ---- BÖLÜM 1: VERİ ÇEKME VE GÜNCELLEME ----
 
