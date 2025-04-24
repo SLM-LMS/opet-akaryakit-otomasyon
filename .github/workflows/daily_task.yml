@@ -38,38 +38,13 @@ jobs:
       - name: Check git status
         run: git status
 
-      # 6. Ana repo'ya değişiklikleri commit et ve pushla
-      - name: Commit and push changes to private repo
+      # 6. Değişiklikleri commit et ve pushla
+      - name: Commit and push changes
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git add Data.xlsx  # Ana dizindeki dosyayı ekliyoruz
           git commit -m "Update Data.xlsx with new fuel prices"  # Commit mesajı
-          
-          # Uzak repo ile güncel değişiklikleri al ve birleştir
-          git fetch origin
-          git rebase origin/main
-          
-          # Değişiklikleri uzak repoya pushla
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main  # Doğru token ile push işlemi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token'ı
-
-      # 7. Paylaşılan repo'ya Data.xlsx dosyasını kaydet
-      - name: Push Data.xlsx to public repository
-        run: |
-          git clone https://github.com/Paylasilan.git public-repo  # Paylaşılan repo'yu klonla
-          cp Data.xlsx public-repo/  # Data.xlsx dosyasını paylaşılan repo'ya kopyala
-          cd public-repo
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-          
-          # Uzak repo ile güncel değişiklikleri al ve birleştir
-          git fetch origin
-          git rebase origin/main
-          
-          git add Data.xlsx
-          git commit -m "Update Data.xlsx in public repo"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Paylasilan.git HEAD:main  # Push işlemi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token'ı
