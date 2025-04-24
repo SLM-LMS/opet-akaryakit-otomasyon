@@ -3,51 +3,57 @@ name: Daily Task - Run Python Script
 on:
   schedule:
     - cron: '0 1 * * *'  # Her gün saat 01:00'de çalışacak
-  workflow_dispatch:  # Manuel olarak tetiklenebilir
+  workflow_dispatch:
 
 permissions:
-  contents: write  # Repo içeriğine yazma izni veriyoruz
+  contents: write
 
 jobs:
   run-python-script:
-    runs-on: ubuntu-latest  # Ubuntu ortamında çalışacak
+    runs-on: ubuntu-latest
 
     steps:
-      # 1. Python ortamını kur
+      # 1. Python kurulumu
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'  # Python 3.9 versiyonu kullanılacak
+          python-version: '3.9'
 
       # 2. Gereksinimleri yükle
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install requests pandas openpyxl
 
-      # 3. Repo'yu çek
+      # 3. Repo'yu tam geçmişle çek
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Tüm commit geçmişini çeker
+          fetch-depth: 0  # Tüm commit geçmişini al
 
-      # 4. Python script'ini çalıştır
+      # 4. Script'i çalıştır
       - name: Run Python script
-        run: |
-          python code.py  # Python script'inizi çalıştırır
+        run: python code.py
 
-      # 5. Değişiklikleri çek ve merge et
+      # 5. Değişiklikleri STASH'le (geçici sakla)
+      - name: Stash local changes
+        run: git stash push -u
+
+      # 6. Uzak değişiklikleri çek
       - name: Pull latest changes
         run: |
-          git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-          git pull origin main --rebase  # Uzaktaki değişiklikleri rebase ile birleştir
+          git config --global user.name "GitHub Actions"
+          git pull origin main --rebase
 
-      # 6. Değişiklikleri commit et ve pushla
-      - name: Commit and push changes
+      # 7. STASH'lenmiş değişiklikleri geri yükle
+      - name: Pop stashed changes
+        run: git stash pop
+
+      # 8. Değişiklikleri commit et ve pushla
+      - name: Commit and push
         run: |
-          git add Data.xlsx  # Doğru dosya adını kullanın
-          git commit -m "Update Data2.xlsx with new fuel prices"
+          git add Data.xlsx
+          git commit -m "Otomatik güncelleme: $(date '+%Y-%m-%d %H:%M:%S')"
           git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
