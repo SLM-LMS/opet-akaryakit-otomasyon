@@ -28,23 +28,26 @@ jobs:
       # 3. Repo'yu çek
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Tüm commit geçmişini çeker
 
       # 4. Python script'ini çalıştır
       - name: Run Python script
         run: |
           python code.py  # Python script'inizi çalıştırır
 
-      # 5. Git status kontrolü yap
-      - name: Check git status
-        run: git status
+      # 5. Değişiklikleri çek ve merge et
+      - name: Pull latest changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git pull origin main --rebase  # Uzaktaki değişiklikleri rebase ile birleştir
 
       # 6. Değişiklikleri commit et ve pushla
       - name: Commit and push changes
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-          git add Data.xlsx  # Ana dizindeki dosyayı ekliyoruz
-          git commit -m "Update Data.xlsx with new fuel prices"  # Commit mesajı
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main  # Doğru token ile push işlemi
+          git add Data.xlsx  # Doğru dosya adını kullanın
+          git commit -m "Update Data2.xlsx with new fuel prices"
+          git push origin main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token'ı
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
