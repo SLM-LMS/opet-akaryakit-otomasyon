@@ -1,2 +1,2 @@
-# opet-akaryakit-otomasyon
-Opet API'den otomatik veri çekme
+# Çalışma
+1. çalışma
