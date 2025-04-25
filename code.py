@@ -5,7 +5,7 @@ import openpyxl
 from openpyxl import load_workbook
 import os
 
-excel_path = 'Veri.xlsx'
+excel_path = 'Veri1.xlsx'
 
 # ---- BÖLÜM 1: VERİ ÇEKME VE GÜNCELLEME ----
 
