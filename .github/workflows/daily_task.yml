@@ -52,7 +52,7 @@ jobs:
       # 8. Değişiklikleri commit et ve pushla
       - name: Commit and push
         run: |
-          git add Veri.xlsx
+          git add Veri1.xlsx
           git commit -m "Otomatik güncelleme: $(date '+%Y-%m-%d %H:%M:%S')"
           git push origin main
         env:
