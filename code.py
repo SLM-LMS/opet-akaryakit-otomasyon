@@ -170,13 +170,14 @@ try:
     # İlk satırı ve eskalasyon değeri 0 olmayanları filtrele
     if not tum_sonuclar.empty:
         # Her bölge için ilk satırı al
-        ilk_satirlar = tum_sonuclar.groupby('Name').first().reset_index()
+        # ilk_satirlar = tum_sonuclar.groupby('Name').first().reset_index()
         
         # Eskalasyon değeri 0 olmayan satırları al
         eskalasyon_satirlar = tum_sonuclar[tum_sonuclar['eskalasyon'] != 0]
         
         # İki DataFrame'i birleştir
-        sonuc_df = pd.concat([ilk_satirlar, eskalasyon_satirlar]).drop_duplicates()
+        # sonuc_df = pd.concat([ilk_satirlar, eskalasyon_satirlar]).drop_duplicates()
+        sonuc_df = pd.concat([eskalasyon_satirlar]).drop_duplicates()
         
         # Tarihe göre sırala
         sonuc_df = sonuc_df.sort_values(by=['Name', 'priceDate'])
